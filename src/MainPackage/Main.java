@@ -29,6 +29,8 @@ class MainFrame extends JFrame {
 
     private JMenuItem resetGraphicsMenuItem;
 
+    private GraphicsDisplay display = new GraphicsDisplay();
+
     public MainFrame() {
         super("Мышь");
         setSize(700, 500);
@@ -50,9 +52,15 @@ class MainFrame extends JFrame {
             }
         };
         fileMenu.add(openGraphicsAction);
+        Action resetGraphicsAction = new AbstractAction("Отменить все изменения") {
+            public void actionPerformed(ActionEvent event) {
+                display.reset();
+            }
+        };
         setJMenuBar(menuBar);
-
-        resetGraphicsMenuItem.setEnabled(false);
+        resetGraphicsMenuItem = fileMenu.add(resetGraphicsAction);
+        resetGraphicsMenuItem.setEnabled(true);
+        add(display, BorderLayout.CENTER);
     }
 
     protected void openGraphics(File selectedFile) {
@@ -78,6 +86,7 @@ class MainFrame extends JFrame {
                 }
             }
 
+            display.displayGraphics(graphicsData);
 
             reader.close();
         } catch (FileNotFoundException ex) {
